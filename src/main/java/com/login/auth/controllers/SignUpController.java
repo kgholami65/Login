@@ -2,9 +2,7 @@ package com.login.auth.controllers;
 import com.login.auth.converter.StringToRole;
 import com.login.auth.model.User;
 import com.login.auth.model.UserReqModel;
-import com.login.auth.service.UserService;
-import com.nimbusds.jwt.JWT;
-import lombok.SneakyThrows;
+import com.login.auth.service.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,19 +12,17 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.RolesAllowed;
-
 @RestController
 @RequestMapping("users")
 @Slf4j
 public class SignUpController {
 
-    private final UserService userService;
+    private final IUserService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final StringToRole stringToRole;
 
     @Autowired
-    public SignUpController(UserService userService,BCryptPasswordEncoder bCryptPasswordEncoder,
+    public SignUpController(IUserService userService, BCryptPasswordEncoder bCryptPasswordEncoder,
                             StringToRole stringToRole) {
         this.userService = userService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;

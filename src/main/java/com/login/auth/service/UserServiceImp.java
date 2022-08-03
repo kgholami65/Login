@@ -17,7 +17,7 @@ import java.util.Set;
 
 @Service
 @Slf4j
-public class UserServiceImp implements UserService{
+public class UserServiceImp implements IUserService {
     private final UserRepository userRepository;
     private Long id;
 

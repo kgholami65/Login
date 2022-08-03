@@ -2,7 +2,7 @@ package com.login.auth.controllers;
 
 import com.login.auth.model.LoginModel;
 import com.login.auth.security.SecurityConstants;
-import com.login.auth.service.UserService;
+import com.login.auth.service.IUserService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
@@ -14,12 +14,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.RolesAllowed;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
@@ -27,12 +23,12 @@ import java.util.Date;
 @RequestMapping("authentication")
 @Slf4j
 public class LoginController {
-    private final UserService userService;
+    private final IUserService userService;
     private final AuthenticationManager authenticationManager;
 
 
     @Autowired
-    public LoginController(UserService userService,AuthenticationManager authenticationManager){
+    public LoginController(IUserService userService, AuthenticationManager authenticationManager){
         this.userService = userService;
         this.authenticationManager = authenticationManager;
     }
@@ -56,7 +52,7 @@ public class LoginController {
                 .compact();
         log.info("authentication successful");
         response.addHeader(SecurityConstants.HEADER_STRING , SecurityConstants.TOKEN_PREFIX + token);
-        return new ResponseEntity<>(SecurityConstants.TOKEN_PREFIX + token,HttpStatus.OK);
+        return new ResponseEntity<>(SecurityConstants.TOKEN_PREFIX + token , HttpStatus.OK);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
