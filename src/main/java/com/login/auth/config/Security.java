@@ -38,7 +38,8 @@ public class Security extends WebSecurityConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests().antMatchers(HttpMethod.POST,"/users/signup")
                 .permitAll().antMatchers(HttpMethod.POST,"/authentication").
-                permitAll().antMatchers(HttpMethod.DELETE,"users/delete/*")
+                permitAll().antMatchers(HttpMethod.POST,"/authentication/verify/*").permitAll().
+                antMatchers(HttpMethod.DELETE,"users/delete/*")
                 .hasAnyRole("ADMIN")
                 .antMatchers(HttpMethod.GET,"authentication").hasAnyRole("ADMIN")
                 .anyRequest().authenticated()

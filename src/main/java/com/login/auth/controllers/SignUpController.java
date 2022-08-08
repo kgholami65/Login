@@ -69,4 +69,5 @@ public class SignUpController {
                 userReqModel.getEmail(),username);
             return new ResponseEntity<>(HttpStatus.OK);
     }
+
 }

@@ -2,7 +2,6 @@ package com.login.auth.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.login.auth.model.LoginModel;
-import com.login.auth.security.SecurityConstants;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;

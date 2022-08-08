@@ -76,6 +76,4 @@ public class UserServiceImp implements IUserService {
             authorities.add(new SimpleGrantedAuthority(role.getName()));
         return new org.springframework.security.core.userdetails.User(user.getName(),user.getPassword(),authorities);
     }
-
-
 }
