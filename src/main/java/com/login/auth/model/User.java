@@ -4,8 +4,6 @@ import lombok.Data;
 import lombok.NonNull;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -18,8 +16,10 @@ public class User {
     @NonNull
     private String name;
     private String password;
+    @Column(unique = true)
+    @NonNull
     private String email;
-    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.PERSIST)
     @JoinTable(
             name = "user_roles",
             joinColumns = {@JoinColumn(name = "user_id",referencedColumnName = "id")},

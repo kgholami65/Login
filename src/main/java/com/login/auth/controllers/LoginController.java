@@ -43,7 +43,7 @@ public class LoginController {
 
 
     @PostMapping
-    public ResponseEntity<?> login(@RequestBody LoginModel loginModel, HttpServletResponse response){
+    public ResponseEntity<?> login(@RequestBody LoginModel loginModel){
         Authentication authenticationToken = new UsernamePasswordAuthenticationToken(loginModel.getName(),
                 loginModel.getPassword());
         try {

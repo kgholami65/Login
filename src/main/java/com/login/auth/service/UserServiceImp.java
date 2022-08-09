@@ -11,9 +11,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -70,10 +70,11 @@ public class UserServiceImp implements IUserService {
             throw new UsernameNotFoundException("username not valid");
         }
         id = user.getId();
-        Set<Roles> roles = user.getAuthorities();
-        List<GrantedAuthority> authorities = new ArrayList<>();
+        List<GrantedAuthority> authorities = user.getAuthorities().stream().map(
+                roles -> new SimpleGrantedAuthority(roles.getName())).collect(Collectors.toList());
+        /*List<GrantedAuthority> authorities = new ArrayList<>();
         for(Roles role : roles)
-            authorities.add(new SimpleGrantedAuthority(role.getName()));
+            authorities.add(new SimpleGrantedAuthority(role.getName()));*/
         return new org.springframework.security.core.userdetails.User(user.getName(),user.getPassword(),authorities);
     }
 }
