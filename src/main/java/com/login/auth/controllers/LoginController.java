@@ -1,28 +1,20 @@
 package com.login.auth.controllers;
 
 import com.login.auth.model.LoginModel;
-import com.login.auth.security.SecurityConstants;
-import com.login.auth.service.IOTPService;
-import com.login.auth.service.IUserService;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.login.auth.service.otp.IOTPService;
+import com.login.auth.service.token.ITokenService;
+import com.login.auth.service.user.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletResponse;
-import java.util.Date;
 
 @RestController
 @RequestMapping("authentication")
@@ -31,14 +23,16 @@ public class LoginController {
     private final IUserService userService;
     private final AuthenticationManager authenticationManager;
     private final IOTPService otpService;
+    private final ITokenService tokenService;
 
 
     @Autowired
     public LoginController(IUserService userService, AuthenticationManager authenticationManager,
-                           IOTPService otpService){
+                           IOTPService otpService, ITokenService tokenService){
         this.userService = userService;
         this.authenticationManager = authenticationManager;
         this.otpService = otpService;
+        this.tokenService = tokenService;
     }
 
 
@@ -75,11 +69,9 @@ public class LoginController {
             log.error("invalid code! please try again");
             return new ResponseEntity<>("invalid code! please try again", HttpStatus.NOT_ACCEPTABLE);
         }
-        String token = Jwts.builder().setSubject(userService.getName())
-                .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS512 , SecurityConstants.TOKEN_SECRET)
-                .compact();
+        String token = tokenService.generateToken(userService.getName());
+        tokenService.saveToken(token);
         log.info("authentication successfull");
-        return new ResponseEntity<>(SecurityConstants.TOKEN_PREFIX + token, HttpStatus.OK);
+        return new ResponseEntity<>(token, HttpStatus.OK);
     }
 }

@@ -1,8 +1,8 @@
-package com.login.auth.service;
+package com.login.auth.service.user;
 
-import com.login.auth.model.Roles;
 import com.login.auth.model.User;
 import com.login.auth.repository.UserRepository;
+import com.login.auth.service.user.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;

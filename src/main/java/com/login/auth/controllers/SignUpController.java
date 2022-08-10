@@ -2,7 +2,7 @@ package com.login.auth.controllers;
 import com.login.auth.converter.StringToRole;
 import com.login.auth.model.User;
 import com.login.auth.model.UserReqModel;
-import com.login.auth.service.IUserService;
+import com.login.auth.service.user.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

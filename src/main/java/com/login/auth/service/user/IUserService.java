@@ -1,4 +1,4 @@
-package com.login.auth.service;
+package com.login.auth.service.user;
 
 import com.login.auth.model.User;
 import org.springframework.security.core.userdetails.UserDetailsService;

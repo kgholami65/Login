@@ -1,4 +1,4 @@
-package com.login.auth.service;
+package com.login.auth.service.otp;
 
 public interface IOTPGenerator {
     Integer generateOTP(String key);

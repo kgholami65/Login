@@ -2,7 +2,8 @@ package com.login.auth.config;
 
 import com.login.auth.security.AuthenticationFilter;
 import com.login.auth.security.AuthorizationFilter;
-import com.login.auth.service.IUserService;
+import com.login.auth.service.token.ITokenService;
+import com.login.auth.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -21,11 +22,14 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class Security extends WebSecurityConfigurerAdapter {
     private final IUserService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final ITokenService tokenService;
 
     @Autowired
-    public Security(IUserService userService, BCryptPasswordEncoder bCryptPasswordEncoder){
+    public Security(IUserService userService, BCryptPasswordEncoder bCryptPasswordEncoder,
+                    ITokenService tokenService) {
         this.userService = userService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.tokenService = tokenService;
     }
     @Bean
     @Override
@@ -44,7 +48,7 @@ public class Security extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"authentication").hasAnyRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()//.addFilter(authenticationFilter())
-                .addFilterBefore(new AuthorizationFilter(authenticationManager(),userService),
+                .addFilterBefore(new AuthorizationFilter(authenticationManager(), userService, tokenService),
                         UsernamePasswordAuthenticationFilter.class).sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }

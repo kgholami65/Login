@@ -1,9 +1,10 @@
-package com.login.auth.service;
+package com.login.auth.service.otp;
 
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.login.auth.service.otp.IOTPGenerator;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
@@ -13,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class OTPGeneratorImp implements IOTPGenerator {
     private static final Integer EXPIRE_MIN = 4;
-    private LoadingCache<String,Integer> otpCache;
+    private final LoadingCache<String, Integer> otpCache;
 
     public OTPGeneratorImp(){
         super();

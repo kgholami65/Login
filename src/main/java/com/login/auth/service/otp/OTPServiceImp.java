@@ -1,12 +1,14 @@
-package com.login.auth.service;
+package com.login.auth.service.otp;
 
+import com.login.auth.service.otp.IOTPGenerator;
+import com.login.auth.service.otp.IOTPService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-public class OTPServiceImp implements IOTPService{
+public class OTPServiceImp implements IOTPService {
     private final IOTPGenerator otpGenerator;
 
     @Autowired
