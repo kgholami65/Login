@@ -42,9 +42,6 @@ public class LoginController {
                 loginModel.getPassword());
         try {
             authenticationManager.authenticate(authenticationToken);
-        } catch (DisabledException e){
-            log.error("User disabled");
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         } catch (BadCredentialsException e){
             log.error("User not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
