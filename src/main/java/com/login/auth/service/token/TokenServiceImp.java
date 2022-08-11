@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
@@ -26,17 +27,17 @@ public class TokenServiceImp implements ITokenService {
 
 
     @Override
-    public void saveToken(String token) {
-        redisTemplate.opsForList().leftPush("tokens", token);
+    public void saveToken(String token, String username) {
+        redisTemplate.opsForValue().set(username, token);
+        redisTemplate.expire(username, SecurityConstants.EXPIRATION_TIME, TimeUnit.MILLISECONDS);
     }
 
     @Override
-    public boolean checkToken(String token) {
-        List<String> tokens = redisTemplate.opsForList().range("tokens", 0, 100);
-        log.info(tokens.toString());
-        if(tokens == null)
-            throw new RuntimeException();
-        return tokens.contains(token);
+    public boolean checkToken(String token, String username) {
+        String token2 = redisTemplate.opsForValue().get(username);
+        if(token2 == null)
+            return false;
+        return token2.equals(token);
     }
 
     @Override

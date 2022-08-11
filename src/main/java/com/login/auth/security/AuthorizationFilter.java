@@ -49,11 +49,10 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
         log.info("access token is: " + token);
         UserDetails userDetails = null;
         token = token.replace(SecurityConstants.TOKEN_PREFIX, "");
-        if(!tokenService.checkToken(token))
-            throw new RuntimeException("token is not valid");
-
         try {
             String username = tokenService.getUserName(token);
+            if(!tokenService.checkToken(token,username))
+                throw new RuntimeException("token is not valid");
             try {
                 userDetails = userService.loadUserByUsername(username);
             } catch (UsernameNotFoundException e){

@@ -70,7 +70,7 @@ public class LoginController {
             return new ResponseEntity<>("invalid code! please try again", HttpStatus.NOT_ACCEPTABLE);
         }
         String token = tokenService.generateToken(userService.getName());
-        tokenService.saveToken(token);
+        tokenService.saveToken(token, userService.getName());
         log.info("authentication successfull");
         return new ResponseEntity<>(token, HttpStatus.OK);
     }
