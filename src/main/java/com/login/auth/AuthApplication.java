@@ -1,11 +1,15 @@
 package com.login.auth;
 
+import com.mongodb.ConnectionString;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.mongodb.core.MongoClientFactoryBean;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,6 +20,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @SpringBootApplication
 @Configuration
 @EnableCaching
+@EnableMongoRepositories
 public class AuthApplication {
 
     public static void main(String[] args) {
@@ -38,5 +43,6 @@ public class AuthApplication {
         redisTemplate.setConnectionFactory(jedisConnectionFactory());
         return redisTemplate;
     }
+
 
 }
