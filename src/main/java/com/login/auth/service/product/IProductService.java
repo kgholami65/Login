@@ -8,4 +8,6 @@ public interface IProductService {
     List<MongoProduct> findAll();
     void addProduct(String name, String type, Long price);
     boolean deleteProduct(String id);
+    boolean checkProductById(String id);
+    void updatePriceById(String id, Long price);
 }

@@ -1,9 +1,9 @@
 package com.login.auth.service.product;
 
 import com.login.auth.model.MongoProduct;
+import com.login.auth.repository.ICustomProductRepository;
 import com.login.auth.repository.IProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,9 +12,13 @@ import java.util.List;
 @Service
 public class ProductServiceImp implements IProductService{
     private final IProductRepository productRepository;
+    private final ICustomProductRepository customProductRepository;
+
+
     @Autowired
-    public ProductServiceImp(IProductRepository productRepository) {
+    public ProductServiceImp(IProductRepository productRepository, ICustomProductRepository customProductRepository) {
         this.productRepository = productRepository;
+        this.customProductRepository = customProductRepository;
     }
 
 
@@ -35,5 +39,15 @@ public class ProductServiceImp implements IProductService{
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean checkProductById(String id) {
+        return productRepository.existsById(id);
+    }
+
+    @Override
+    public void updatePriceById(String id, Long price) {
+        customProductRepository.updatePriceById(id, price);
     }
 }

@@ -46,7 +46,6 @@ public class Security extends WebSecurityConfigurerAdapter {
                 antMatchers(HttpMethod.DELETE,"users/delete/*")
                 .hasAnyRole("ADMIN")
                 .antMatchers(HttpMethod.GET,"authentication").hasAnyRole("ADMIN")
-                .antMatchers(HttpMethod.POST, "products/add").hasAnyRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()//.addFilter(authenticationFilter())
                 .addFilterBefore(new AuthorizationFilter(authenticationManager(), userService, tokenService),
