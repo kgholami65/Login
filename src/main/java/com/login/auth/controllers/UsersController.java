@@ -1,5 +1,5 @@
 package com.login.auth.controllers;
-import com.login.auth.converter.StringToRole;
+import com.login.auth.utility.StringToRole;
 import com.login.auth.model.User;
 import com.login.auth.model.UserReqModel;
 import com.login.auth.service.user.IUserService;
@@ -25,18 +25,16 @@ public class UsersController {
 
     private final IUserService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final StringToRole stringToRole;
 
     @Autowired
-    public UsersController(IUserService userService, BCryptPasswordEncoder bCryptPasswordEncoder,
-                           StringToRole stringToRole) {
+    public UsersController(IUserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userService = userService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.stringToRole = stringToRole;
     }
 
     @PostMapping("signup")
     public ResponseEntity addUser(@RequestBody UserReqModel userReqModel){
+        StringToRole stringToRole = new StringToRole();
         stringToRole.setRoles(userReqModel.getRoles());
 
         if (userService.checkUser(userReqModel.getName())){
