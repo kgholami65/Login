@@ -25,17 +25,6 @@ public class AuthApplication {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public JedisConnectionFactory jedisConnectionFactory(){
-        return new JedisConnectionFactory();
-    }
-
-    @Bean
-    public RedisTemplate<String, String> redisTemplate(){
-        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
-        redisTemplate.setConnectionFactory(jedisConnectionFactory());
-        return redisTemplate;
-    }
 
 
 }
