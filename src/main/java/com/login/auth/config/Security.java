@@ -31,6 +31,8 @@ public class Security extends WebSecurityConfigurerAdapter {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.tokenService = tokenService;
     }
+
+
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception{

@@ -24,7 +24,9 @@ public class CustomProductRepositoryImp implements ICustomProductRepository{
         Query query = new Query();
         query.addCriteria(Criteria.where("id").is(id));
         Update update = new Update();
-        update.set("price",price);
-        mongoTemplate.updateFirst(query,update, MongoProduct.class);
+        update.set("price", price);
+        mongoTemplate.updateFirst(query, update, MongoProduct.class);
     }
+
+
 }

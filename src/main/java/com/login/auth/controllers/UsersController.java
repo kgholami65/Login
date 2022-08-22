@@ -3,27 +3,33 @@ import com.login.auth.converter.StringToRole;
 import com.login.auth.model.User;
 import com.login.auth.model.UserReqModel;
 import com.login.auth.service.user.IUserService;
+import com.login.auth.utility.FileUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("users")
 @Slf4j
-public class SignUpController {
+public class UsersController {
 
     private final IUserService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final StringToRole stringToRole;
 
     @Autowired
-    public SignUpController(IUserService userService, BCryptPasswordEncoder bCryptPasswordEncoder,
-                            StringToRole stringToRole) {
+    public UsersController(IUserService userService, BCryptPasswordEncoder bCryptPasswordEncoder,
+                           StringToRole stringToRole) {
         this.userService = userService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.stringToRole = stringToRole;
@@ -38,7 +44,7 @@ public class SignUpController {
             return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
         }
         userService.createUser(new User(userReqModel.getName(),bCryptPasswordEncoder.encode(userReqModel.getPassword()),
-                userReqModel.getEmail(),stringToRole.convertToRole()));
+                userReqModel.getEmail(),stringToRole.convertToRole(),null));
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 
@@ -68,6 +74,30 @@ public class SignUpController {
         userService.changeUser(userReqModel.getName(),bCryptPasswordEncoder.encode(userReqModel.getPassword()),
                 userReqModel.getEmail(),username);
             return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PreAuthorize("#username == principal.username")
+    @GetMapping(value = "/profile/download/{username}")
+    public ResponseEntity<?> downloadPhoto(@PathVariable String username, HttpServletResponse response) {
+        FileUtil fileUtil = new FileUtil();
+        try {
+            fileUtil.downloadFile(username, response, userService.getPhotoByName(username));
+        } catch (IOException e){
+            log.error("error in downloading the file");
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(value = "profile/upload")
+    public ResponseEntity<?> uploadFile(@RequestParam("image") MultipartFile multipartFile)  {
+        FileUtil fileUtil = new FileUtil();
+        if(fileUtil.uploadFile(userService.getName(), multipartFile.getOriginalFilename(), multipartFile)) {
+            userService.savePhotoByName(multipartFile.getOriginalFilename(), SecurityContextHolder.getContext()
+                    .getAuthentication().getName());
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
     }
 
 }

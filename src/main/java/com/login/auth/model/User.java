@@ -3,6 +3,7 @@ package com.login.auth.model;
 import lombok.Data;
 import lombok.NonNull;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.util.Set;
 
@@ -26,13 +27,15 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "id")}
     )
     private Set<Roles> authorities;
+    private String photoName;
 
 
-    public User(String name,String password,String email,Set<Roles> authorities){
+    public User(String name,String password,String email,Set<Roles> authorities,String photoName){
         this.name = name;
         this.password = password;
         this.email = email;
         this.authorities = authorities;
+        this.photoName = photoName;
     }
 
 

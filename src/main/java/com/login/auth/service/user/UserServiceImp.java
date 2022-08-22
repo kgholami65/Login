@@ -62,6 +62,17 @@ public class UserServiceImp implements IUserService {
     }
 
     @Override
+    public String getPhotoByName(String name) {
+        return userRepository.getPhotoByName(name);
+    }
+
+    @Override
+    public void savePhotoByName(String photoName, String username) {
+        userRepository.savePhotoByName(username, photoName);
+    }
+
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         log.info("name is " + username);
         User user = userRepository.getUserByName(username);

@@ -1,7 +1,6 @@
 package com.login.auth.service.token;
 
 import com.login.auth.security.SecurityConstants;
-import com.login.auth.service.token.ITokenService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -10,8 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
+import java.util.Date;;
 import java.util.concurrent.TimeUnit;
 
 @Service
