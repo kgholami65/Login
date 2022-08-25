@@ -1,8 +1,8 @@
 package com.login.auth.service.user;
 
+
 import com.login.auth.model.User;
 import com.login.auth.repository.UserRepository;
-import com.login.auth.service.user.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
 
 
 import java.util.List;
@@ -81,11 +82,14 @@ public class UserServiceImp implements IUserService {
             throw new UsernameNotFoundException("username not valid");
         }
         id = user.getId();
-        List<GrantedAuthority> authorities = user.getAuthorities().stream().map(
+        List<GrantedAuthority> authorities = user.getRoles().stream().map(
                 roles -> new SimpleGrantedAuthority(roles.getName())).collect(Collectors.toList());
-        /*List<GrantedAuthority> authorities = new ArrayList<>();
+        /*List<Authorities> authoritiesEntity = new ArrayList<>();
+        user.getRoles().forEach(role -> authoritiesEntity.addAll(role.getAuthorities()));
+        authoritiesEntity.forEach(authority -> authorities.add(new SimpleGrantedAuthority(authority.getName())));
+        List<GrantedAuthority> authorities = new ArrayList<>();
         for(Roles role : roles)
             authorities.add(new SimpleGrantedAuthority(role.getName()));*/
-        return new org.springframework.security.core.userdetails.User(user.getName(),user.getPassword(),authorities);
+        return new org.springframework.security.core.userdetails.User(user.getName(), user.getPassword(), authorities);
     }
 }

@@ -1,6 +1,5 @@
 package com.login.auth.service.token;
 
-import org.springframework.data.redis.core.RedisTemplate;
 
 public interface ITokenService {
     void saveToken(String token, String username);

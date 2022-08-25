@@ -41,8 +41,8 @@ public class UsersController {
             log.info("username not valid");
             return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
         }
-        userService.createUser(new User(userReqModel.getName(),bCryptPasswordEncoder.encode(userReqModel.getPassword()),
-                userReqModel.getEmail(),stringToRole.convertToRole(),null));
+        userService.createUser(new User(userReqModel.getName(), bCryptPasswordEncoder.encode(userReqModel.getPassword()),
+                userReqModel.getEmail(), stringToRole.convertToRole(),null));
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 
@@ -88,7 +88,7 @@ public class UsersController {
     }
 
     @PostMapping(value = "profile/upload")
-    public ResponseEntity<?> uploadFile(@RequestParam("image") MultipartFile multipartFile)  {
+    public ResponseEntity<?> uploadPhoto(@RequestParam("image") MultipartFile multipartFile)  {
         FileUtil fileUtil = new FileUtil();
         if(fileUtil.uploadFile(userService.getName(), multipartFile.getOriginalFilename(), multipartFile)) {
             userService.savePhotoByName(multipartFile.getOriginalFilename(), SecurityContextHolder.getContext()

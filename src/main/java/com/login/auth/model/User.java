@@ -1,14 +1,18 @@
 package com.login.auth.model;
 
+import com.google.common.hash.HashCode;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
-import javax.annotation.Nullable;
 import javax.persistence.*;
+import java.util.HashMap;
 import java.util.Set;
 
 @Entity
-@Data
+//@Data
+//@EqualsAndHashCode
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,19 +30,35 @@ public class User {
             joinColumns = {@JoinColumn(name = "user_id",referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "id")}
     )
-    private Set<Roles> authorities;
+    private Set<Roles> roles;
     private String photoName;
 
 
-    public User(String name,String password,String email,Set<Roles> authorities,String photoName){
+    public User(String name,String password,String email,Set<Roles> roles,String photoName){
         this.name = name;
         this.password = password;
         this.email = email;
-        this.authorities = authorities;
+        this.roles = roles;
         this.photoName = photoName;
     }
 
+    public Set<Roles> getRoles() {
+        return roles;
+    }
 
-    public User(){}
+    public String getName() {
+        return name;
+    }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public User() {
+
+    }
 }

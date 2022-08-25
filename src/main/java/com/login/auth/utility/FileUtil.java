@@ -1,9 +1,6 @@
 package com.login.auth.utility;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,6 +33,8 @@ public class FileUtil {
         FileCopyUtils.copy(inputStream, response.getOutputStream());
         inputStream.close();
     }
+
+
 
     public boolean uploadFile(String userName, String fileName, MultipartFile multipartFile)  {
         Path path = Paths.get(FILEPATH + userName);

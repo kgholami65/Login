@@ -1,11 +1,12 @@
 package com.login.auth.config;
 
-import com.login.auth.security.AuthenticationFilter;
+
 import com.login.auth.security.AuthorizationFilter;
 import com.login.auth.service.token.ITokenService;
 import com.login.auth.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -16,9 +17,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@Configuration
 public class Security extends WebSecurityConfigurerAdapter {
     private final IUserService userService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -51,7 +54,8 @@ public class Security extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()//.addFilter(authenticationFilter())
                 .addFilterBefore(new AuthorizationFilter(authenticationManager(), userService, tokenService),
-                        UsernamePasswordAuthenticationFilter.class).sessionManagement()
+                        UsernamePasswordAuthenticationFilter.class)
+                        .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
@@ -60,9 +64,9 @@ public class Security extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder);
     }
 
-    public AuthenticationFilter authenticationFilter() throws Exception {
+    /*public AuthenticationFilter authenticationFilter() throws Exception {
         AuthenticationFilter filter = new AuthenticationFilter(authenticationManager());
         filter.setFilterProcessesUrl("/users/login");
         return filter;
-    }
+    }*/
 }

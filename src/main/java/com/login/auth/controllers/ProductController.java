@@ -45,6 +45,7 @@ public class ProductController {
     }
 
     @PutMapping("/change/{id}/{price}")
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<?> changeProduct(@PathVariable String id, @PathVariable Long price){
         if (productService.checkProductById(id)){
             productService.updatePriceById(id, price);
