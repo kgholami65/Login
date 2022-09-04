@@ -17,7 +17,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -45,17 +44,27 @@ public class Security extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests().antMatchers(HttpMethod.POST,"/users/signup")
-                .permitAll().antMatchers(HttpMethod.POST,"/authentication").
-                permitAll().antMatchers(HttpMethod.POST,"/authentication/verify/*").permitAll().
+        http.csrf().disable().
+
+                authorizeRequests().
+                antMatchers(HttpMethod.POST,"/users/signup")
+                .permitAll().
+                antMatchers(HttpMethod.POST,"/authentication").
+                permitAll().
+                antMatchers(HttpMethod.POST,"/authentication/verify/*").
+                permitAll().
+                antMatchers("/authentication/reset")
+                .permitAll().
                 antMatchers(HttpMethod.DELETE,"users/delete/*")
                 .hasAnyRole("ADMIN")
-                .antMatchers(HttpMethod.GET,"authentication").hasAnyRole("ADMIN")
-                .anyRequest().authenticated()
+                .antMatchers(HttpMethod.GET,"authentication").
+                hasAnyRole("ADMIN")
+                .anyRequest().
+                authenticated()
                 .and()//.addFilter(authenticationFilter())
                 .addFilterBefore(new AuthorizationFilter(authenticationManager(), userService, tokenService),
                         UsernamePasswordAuthenticationFilter.class)
-                        .sessionManagement()
+                .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 

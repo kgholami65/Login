@@ -11,4 +11,5 @@ public class UserReqModel {
     private String password;
     private String email;
     private Set<String> roles;
+    private String mobile_number;
 }

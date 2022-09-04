@@ -31,15 +31,29 @@ public class User {
             inverseJoinColumns = {@JoinColumn(name = "role_id",referencedColumnName = "id")}
     )
     private Set<Roles> roles;
+
+    @Column(name = "mobile_number", unique = true)
+    private String mobileNumber;
+
+    @Column(name = "photo_name")
     private String photoName;
 
+    public String getPhotoName() {
+        return photoName;
+    }
 
-    public User(String name,String password,String email,Set<Roles> roles,String photoName){
+    public void setPhotoName(String photoName) {
+        this.photoName = photoName;
+    }
+
+
+    public User(String name,String password,String email,Set<Roles> roles,String photoName, String mobileNumber){
         this.name = name;
         this.password = password;
         this.email = email;
         this.roles = roles;
         this.photoName = photoName;
+        this.mobileNumber = mobileNumber;
     }
 
     public Set<Roles> getRoles() {

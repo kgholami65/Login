@@ -45,14 +45,25 @@ public class LoginController {
             log.error("User not found");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        otpService.generateOTP(loginModel.getName());
-        return new ResponseEntity<>(HttpStatus.OK);
+        String token = tokenService.generateToken(userService.getName());
+        tokenService.saveToken(token, userService.getName());
+
+        return new ResponseEntity<>(token, HttpStatus.OK);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public String get(){
         return "welcome " + userService.getName();
+    }
+
+    @PostMapping("/reset")
+    public ResponseEntity<String> resetPassword(@RequestParam(name = "mobile_number") String mobileNumber){
+        if(userService.checkUserByMobile(mobileNumber)){
+            otpService.generateOTP(userService.getName());
+            return ResponseEntity.ok("head to http://localhost:8090/verify to authenticate");
+        } else
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 

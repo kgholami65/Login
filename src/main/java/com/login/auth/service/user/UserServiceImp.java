@@ -72,6 +72,21 @@ public class UserServiceImp implements IUserService {
         userRepository.savePhotoByName(username, photoName);
     }
 
+    @Override
+    public boolean checkUserByMobile(String mobileNumber) {
+        User user = userRepository.getUserByMobileNumber(mobileNumber);
+        id = user.getId();
+        return userRepository.existsUserByMobileNumber(mobileNumber);
+    }
+
+    @Override
+    public void editPasswordByName(String password, String username) {
+        if(userRepository.existsUserByName(username))
+            userRepository.editPasswordByName(password, username);
+        else
+            throw new UsernameNotFoundException("username not valid");
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

@@ -42,7 +42,7 @@ public class UsersController {
             return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
         }
         userService.createUser(new User(userReqModel.getName(), bCryptPasswordEncoder.encode(userReqModel.getPassword()),
-                userReqModel.getEmail(), stringToRole.convertToRole(),null));
+                userReqModel.getEmail(), stringToRole.convertToRole(),null, userReqModel.getMobile_number()));
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 
@@ -96,6 +96,13 @@ public class UsersController {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @PostMapping(value = "/changepassword")
+    public ResponseEntity<?> changePassword(@RequestParam("new_password") String password){
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        userService.editPasswordByName(bCryptPasswordEncoder.encode(password), userName);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

@@ -27,6 +27,6 @@ public class MongoConfig extends AbstractMongoClientConfiguration {
 
     @Bean
     public MongoTemplate mongoTemplate(){
-        return new MongoTemplate(mongoClient(),getDatabaseName());
+        return new MongoTemplate(mongoClient(), getDatabaseName());
     }
 }
