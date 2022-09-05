@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserServiceImp implements IUserService {
     private final UserRepository userRepository;
-    private Long id;
 
     @Autowired
     public UserServiceImp(UserRepository userRepository){
@@ -36,11 +35,6 @@ public class UserServiceImp implements IUserService {
         return userRepository.existsUserByName(name);
     }
 
-    @Override
-    public String getName() {
-        User user = userRepository.findUsersById(id);
-        return user.getName();
-    }
 
     @Override
     public boolean checkUserById(Long Id) {
@@ -74,8 +68,6 @@ public class UserServiceImp implements IUserService {
 
     @Override
     public boolean checkUserByMobile(String mobileNumber) {
-        User user = userRepository.getUserByMobileNumber(mobileNumber);
-        id = user.getId();
         return userRepository.existsUserByMobileNumber(mobileNumber);
     }
 
@@ -96,7 +88,6 @@ public class UserServiceImp implements IUserService {
             log.info("user is null");
             throw new UsernameNotFoundException("username not valid");
         }
-        id = user.getId();
         List<GrantedAuthority> authorities = user.getRoles().stream().map(
                 roles -> new SimpleGrantedAuthority(roles.getName())).collect(Collectors.toList());
         /*List<Authorities> authoritiesEntity = new ArrayList<>();

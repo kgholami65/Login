@@ -51,7 +51,7 @@ public class Security extends WebSecurityConfigurerAdapter {
                 .permitAll().
                 antMatchers(HttpMethod.POST,"/authentication").
                 permitAll().
-                antMatchers(HttpMethod.POST,"/authentication/verify/*").
+                antMatchers(HttpMethod.POST,"/authentication/verify").
                 permitAll().
                 antMatchers("/authentication/reset")
                 .permitAll().
