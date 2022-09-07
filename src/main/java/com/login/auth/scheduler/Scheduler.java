@@ -30,7 +30,7 @@ public class Scheduler {
     }
 
 
-    @Scheduled(fixedRate = 30000) //count  all users every 10 seconds
+    @Scheduled(fixedRate = 30000) //count  all users every 30 seconds
     public void userReport(){
         ArrayList<User> users = (ArrayList<User>) userRepository.findAll();
         log.info("number of all users: {}", users.size());
