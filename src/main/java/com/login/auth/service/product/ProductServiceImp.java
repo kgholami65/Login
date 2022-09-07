@@ -6,6 +6,7 @@ import com.login.auth.repository.IProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -29,7 +30,7 @@ public class ProductServiceImp implements IProductService{
 
     @Override
     public void addProduct(String name, String type, Long price) {
-        productRepository.save(new MongoProduct(name,type,price));
+        productRepository.save(new MongoProduct(name, type, price, LocalDateTime.now()));
     }
 
     @Override

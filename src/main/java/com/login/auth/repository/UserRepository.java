@@ -8,6 +8,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Repository
 public interface UserRepository extends CrudRepository<User,Long> {
     boolean existsUserByName(String name);
@@ -38,5 +40,6 @@ public interface UserRepository extends CrudRepository<User,Long> {
     @Query("UPDATE User u SET u.password = :password WHERE u.name = :name")
     void editPasswordByName(@Param("password") String password, @Param("name") String name);
 
-    User getUserByMobileNumber(String mobileNumber);
+    @Query("SELECT count(name) from User Where createdAt >= :creationTime")
+    int countUsersWithCreationDateAfter(@Param("creationTime") LocalDateTime creationTime);
 }

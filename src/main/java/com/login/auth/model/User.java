@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.NonNull;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -38,6 +40,9 @@ public class User {
     @Column(name = "photo_name")
     private String photoName;
 
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
     public String getPhotoName() {
         return photoName;
     }
@@ -47,13 +52,15 @@ public class User {
     }
 
 
-    public User(String name,String password,String email,Set<Roles> roles,String photoName, String mobileNumber){
+    public User(String name,String password,String email,Set<Roles> roles,String photoName, String mobileNumber,
+                 LocalDateTime createdAt){
         this.name = name;
         this.password = password;
         this.email = email;
         this.roles = roles;
         this.photoName = photoName;
         this.mobileNumber = mobileNumber;
+        this.createdAt = createdAt;
     }
 
     public Set<Roles> getRoles() {

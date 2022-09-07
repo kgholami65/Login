@@ -17,6 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @RestController
 @RequestMapping("users")
@@ -42,7 +45,8 @@ public class UsersController {
             return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
         }
         userService.createUser(new User(userReqModel.getName(), bCryptPasswordEncoder.encode(userReqModel.getPassword()),
-                userReqModel.getEmail(), stringToRole.convertToRole(),null, userReqModel.getMobile_number()));
+                userReqModel.getEmail(), stringToRole.convertToRole(), null, userReqModel.getMobile_number(),
+                LocalDateTime.now()));
         return new ResponseEntity(HttpStatus.ACCEPTED);
     }
 
@@ -90,7 +94,8 @@ public class UsersController {
     @PostMapping(value = "profile/upload")
     public ResponseEntity<?> uploadPhoto(@RequestParam("image") MultipartFile multipartFile)  {
         FileUtil fileUtil = new FileUtil();
-        if(fileUtil.uploadFile(userService.getName(), multipartFile.getOriginalFilename(), multipartFile)) {
+        if(fileUtil.uploadFile(SecurityContextHolder.getContext()
+                .getAuthentication().getName(), multipartFile.getOriginalFilename(), multipartFile)) {
             userService.savePhotoByName(multipartFile.getOriginalFilename(), SecurityContextHolder.getContext()
                     .getAuthentication().getName());
             return new ResponseEntity<>(HttpStatus.OK);
